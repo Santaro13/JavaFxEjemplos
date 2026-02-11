@@ -3,11 +3,9 @@ package com.example.ej3gridimageview;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -20,12 +18,13 @@ public class HelloController implements Initializable {
     @FXML
     private GridPane mainGrid;
 
-    @FXML
+
+    /*@FXML
     protected void onHelloButtonClick() {
         label.setText("Welcome to JavaFX Application!");
     }
 
-    /*public void click(MouseEvent mouseEvent) {
+    public void click(MouseEvent mouseEvent) {
         int columna = 0;
         int fila = 0;
         for (Node node : mainGrid.getChildren()) {
@@ -55,48 +54,61 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        pintarTablero();
+        Tablero tablero = new Tablero();
+        pintarTablero(tablero);
     }
-    public void accion(String coordenadas){
-        String args[] = coordenadas.split(";");
+
+    /*public void accion(String coordenadas){
+        String[] args = coordenadas.split(";");
         int fila = Integer.parseInt(args[0]);
         int columna = Integer.parseInt(args[1]);
         System.out.println(fila+"-"+columna);
-    }
+    }*/
     public void accion(int x, int y){
         System.out.println(x+"-"+y);
     }
-    private void pintarTablero() {
+    private void pintarTablero(Tablero tablero) {
         Pane pane;
-        for (int i = 0; i <= 7; i++) {
-            for (int j = 0; j <= 7; j++) {
+        for (int i = 0; i <= 8; i++) {
+            for (int j = 0; j <= 8; j++) {
                 pane = new Pane();
                 if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) {
                     pane.setStyle("-fx-background-color: #684714;");
                 } else {
                     pane.setStyle("-fx-background-color: #ffe68e");
                 }
-                if (i == j) {
-                    //addAll vs add
-                    pane.getChildren().add(new ImageView(new Image("File:Ej3GridImageView/src/main/resources/com/example/ej3gridimageview/imagenes/CaballoBlanco.png")));
-
-                    //pane.getChildren().add(new ImageView(new Image("File:src/main/resources/com/example/ej3gridimageview/imagenes/CaballoBlanco.png")));
+                if (tablero.hayPieza(i,j)) {
+                    pane.getChildren().add(new ImageView(new Image("File:Ej3GridImageView/src/main/resources/com/example/ej3gridimageview/imagenes/".concat(tablero.getTablero()[i][j].toString()))));
                 }
                 mainGrid.add(pane, j, i);
-                String message = "Click on cell ["+i+", "+j+"]";
-                String envio = i+";"+j;
+                String message1 = "Click on cell ["+i+", "+j+"]";
+                String envio1 = i+";"+j; ;
                 int fila = i;
                 int columna = j;
                 pane.setOnMouseClicked(e -> {
-                    System.out.println(message);
-                    //accion(envio);
+                    System.out.println(message1);
                     accion(fila,columna);
+
                 });
             }
         }
     }
 
 
+    @SuppressWarnings("unused")
     public void enroque(ActionEvent actionEvent) {
+        // TODO: Implementar lógica de enroque
     }
 }
+/*juego.setTurno(0);
+Juego juego= new Juego();
+String move = juego.jugada(message1, tablero);
+
+                    if (move!=null) {
+        tablero.moverPieza(juego.getMovimiento());
+        }
+        if (tablero.hayJaque(juego.getTurno())){
+        Constantes.print(Constantes.MSG_JAQUE);
+                    }
+
+ */
