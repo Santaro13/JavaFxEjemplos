@@ -23,6 +23,6 @@ public class Rey extends Pieza {
     }
     @Override
     public String toString() {
-        return getColor() == 0 ? "ReyBlanco.png" : "ReyNegro.png";
+        return getColor() == 0 ? "ReyNegro.png" : "ReyBlanco.png";
     }
 }
