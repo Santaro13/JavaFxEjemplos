@@ -69,7 +69,8 @@ public class HelloController implements Initializable {
     }
     private void pintarTablero(Tablero tablero) {
         Pane pane;
-        for (int i = 0; i <= 8; i++) {
+
+        for (int i = 0, aux=7; i <= 8; i++) {
             for (int j = 0; j <= 8; j++) {
                 pane = new Pane();
                 if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) {
@@ -77,13 +78,13 @@ public class HelloController implements Initializable {
                 } else {
                     pane.setStyle("-fx-background-color: #ffe68e");
                 }
-                if (tablero.hayPieza(i,j)) {
-                    pane.getChildren().add(new ImageView(new Image("File:Ej3GridImageView/src/main/resources/com/example/ej3gridimageview/imagenes/".concat(tablero.getTablero()[i][j].toString()))));
+                if (tablero.hayPieza(aux,j)) {
+                    pane.getChildren().add(new ImageView(new Image("File:Ej3GridImageView/src/main/resources/com/example/ej3gridimageview/imagenes/".concat(tablero.getTablero()[aux][j].toString()))));
                 }
                 mainGrid.add(pane, j, i);
                 String message1 = "Click on cell ["+i+", "+j+"]";
-                String envio1 = i+";"+j; ;
-                int fila = i;
+                String envio1 = aux+";"+j; ;
+                int fila = aux;
                 int columna = j;
                 pane.setOnMouseClicked(e -> {
                     System.out.println(message1);
@@ -91,6 +92,7 @@ public class HelloController implements Initializable {
 
                 });
             }
+            aux--;
         }
     }
 
