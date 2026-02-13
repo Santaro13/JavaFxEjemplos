@@ -75,10 +75,7 @@ public class Movimiento {
 
     @Override
     public String toString() {
-        return "ajedrez.Movimiento{" +
-                "posInicial=" + posInicial +
-                ", posFinal=" + posFinal +
-                '}';
+        return posInicial+""+ posFinal;
     }
 
 

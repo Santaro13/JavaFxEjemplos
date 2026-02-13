@@ -18,6 +18,8 @@ public class HelloController implements Initializable {
     @FXML
     private GridPane mainGrid;
 
+    private int filaOrigen = -1;
+    private int colOrigen = -1;
 
     /*@FXML
     protected void onHelloButtonClick() {
@@ -64,13 +66,14 @@ public class HelloController implements Initializable {
         int columna = Integer.parseInt(args[1]);
         System.out.println(fila+"-"+columna);
     }*/
-    public void accion(int x, int y){
-        System.out.println(x+"-"+y);
+    public void accion(int x, int y) {
+        System.out.println(x + "-" + y);
     }
+
     private void pintarTablero(Tablero tablero) {
         Pane pane;
 
-        for (int i = 0, aux=7; i <= 8; i++) {
+        for (int i = 0, aux = 7; i <= 8; i++) {
             for (int j = 0; j <= 8; j++) {
                 pane = new Pane();
                 if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) {
@@ -78,17 +81,40 @@ public class HelloController implements Initializable {
                 } else {
                     pane.setStyle("-fx-background-color: #ffe68e");
                 }
-                if (tablero.hayPieza(aux,j)) {
+                if (tablero.hayPieza(aux, j)) {
                     pane.getChildren().add(new ImageView(new Image("File:Ej3GridImageView/src/main/resources/com/example/ej3gridimageview/imagenes/".concat(tablero.getTablero()[aux][j].toString()))));
                 }
                 mainGrid.add(pane, j, i);
-                String message1 = "Click on cell ["+i+", "+j+"]";
-                String envio1 = aux+";"+j; ;
+                String envio1 = aux + ";" + j;
+                ;
                 int fila = aux;
                 int columna = j;
+
                 pane.setOnMouseClicked(e -> {
-                    System.out.println(message1);
-                    accion(fila,columna);
+                    if (filaOrigen == -1) {
+                        if (tablero.hayPieza(fila, columna)) {
+                            filaOrigen = fila;
+                            colOrigen = columna;
+//                            finalPane.setStyle("-fx-background-color: ##C0DDF7;");
+                            accion(filaOrigen, colOrigen);
+                        }
+                    } else {
+                        int filaDestino = fila;
+                        int colDestino = columna;
+                        Posicion posInicial = new Posicion(filaOrigen, colOrigen);
+                        Posicion posFinal = new Posicion(filaDestino, colDestino);
+                        Movimiento mov = new Movimiento(posInicial, posFinal);
+                        accion(filaDestino, colDestino);
+                        Juego juego = new Juego();
+                        juego.setTurno(1);
+                        juego.jugada(mov.toString(), tablero);
+                        tablero.moverPieza(mov);
+
+                        filaOrigen = -1;
+                        colOrigen = -1;
+                        pintarTablero(tablero);
+                    }
+
 
                 });
             }
